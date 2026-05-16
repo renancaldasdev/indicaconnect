@@ -11,26 +11,13 @@ export type UseCurrentUrlReturn = {
         currentUrl?: string,
         startsWith?: boolean,
     ) => boolean;
-    isCurrentOrParentUrl: (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        currentUrl?: string,
-    ) => boolean;
-    whenCurrentUrl: <T, F = null>(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        ifTrue: T,
-        ifFalse?: F,
-    ) => T | F;
+    isCurrentOrParentUrl: (urlToCheck: NonNullable<InertiaLinkProps['href']>, currentUrl?: string) => boolean;
+    whenCurrentUrl: <T, F = null>(urlToCheck: NonNullable<InertiaLinkProps['href']>, ifTrue: T, ifFalse?: F) => T | F;
 };
 
 const page = usePage();
 const currentUrlReactive = computed(
-    () =>
-        new URL(
-            page.url,
-            typeof window !== 'undefined'
-                ? window.location.origin
-                : 'http://localhost',
-        ).pathname,
+    () => new URL(page.url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost').pathname,
 );
 
 export function useCurrentUrl(): UseCurrentUrlReturn {
@@ -58,19 +45,16 @@ export function useCurrentUrl(): UseCurrentUrlReturn {
         }
     }
 
-    function isCurrentOrParentUrl(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        currentUrl?: string,
-    ) {
+    function isCurrentOrParentUrl(urlToCheck: NonNullable<InertiaLinkProps['href']>, currentUrl?: string) {
         return isCurrentUrl(urlToCheck, currentUrl, true);
     }
 
-    function whenCurrentUrl(
+    function whenCurrentUrl<T, F = null>(
         urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        ifTrue: any,
-        ifFalse: any = null,
-    ) {
-        return isCurrentUrl(urlToCheck) ? ifTrue : ifFalse;
+        ifTrue: T,
+        ifFalse?: F,
+    ): T | F {
+        return isCurrentUrl(urlToCheck) ? ifTrue : (ifFalse as F);
     }
 
     return {
