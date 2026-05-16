@@ -4,16 +4,7 @@ import prettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
 import vue from 'eslint-plugin-vue';
 
-const controlStatements = [
-    'if',
-    'return',
-    'for',
-    'while',
-    'do',
-    'switch',
-    'try',
-    'throw',
-];
+const controlStatements = ['if', 'return', 'for', 'while', 'do', 'switch', 'try', 'throw'];
 const paddingAroundControl = [
     ...controlStatements.flatMap((stmt) => [
         { blankLine: 'always', prev: '*', next: stmt },
@@ -39,7 +30,9 @@ export default defineConfigWithVueTs(
         },
         rules: {
             'vue/multi-word-component-names': 'off',
-            '@typescript-eslint/no-explicit-any': 'off',
+            'vue/script-setup-uses-vars': 'error',
+            'vue/attribute-hyphenation': ['error', 'always'],
+            '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/consistent-type-imports': [
                 'error',
                 {
@@ -57,10 +50,7 @@ export default defineConfigWithVueTs(
                     },
                 },
             ],
-            'import/consistent-type-specifier-style': [
-                'error',
-                'prefer-top-level',
-            ],
+            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
         },
     },
     {
@@ -69,10 +59,7 @@ export default defineConfigWithVueTs(
         },
         rules: {
             '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
-            '@stylistic/padding-line-between-statements': [
-                'error',
-                ...paddingAroundControl,
-            ],
+            '@stylistic/padding-line-between-statements': ['error', ...paddingAroundControl],
         },
     },
     {

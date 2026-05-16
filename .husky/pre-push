@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+# Roda os testes do Laravel dentro do container Sail antes de permitir o push
+./vendor/bin/sail pest --parallel || ./vendor/bin/sail artisan test
